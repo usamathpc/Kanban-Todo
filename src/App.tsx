@@ -1,11 +1,14 @@
 import React from "react";
 import { Layout } from "./components/Layout";
 import { Main } from "./components/Main";
+import { TodoProvider } from "./TodoContext";
 function App() {
   return (
-    <Layout>
-      <Main />
-    </Layout>
+    <TodoProvider>
+      <Layout>
+        <Main />
+      </Layout>
+    </TodoProvider>
   );
 }
 
