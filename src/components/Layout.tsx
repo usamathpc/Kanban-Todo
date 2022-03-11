@@ -47,7 +47,7 @@ export const Layout = (props: Props) => {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+            {["All Todos", "Starred", "Drafts"].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -57,7 +57,7 @@ export const Layout = (props: Props) => {
             ))}
           </List>
           <Divider />
-          <List>
+          {/* <List>
             {["All mail", "Trash", "Spam"].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>
@@ -66,7 +66,7 @@ export const Layout = (props: Props) => {
                 <ListItemText primary={text} />
               </ListItem>
             ))}
-          </List>
+          </List> */}
         </Box>
       </Drawer>
       <Box
