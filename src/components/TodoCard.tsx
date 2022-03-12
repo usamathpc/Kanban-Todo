@@ -1,5 +1,12 @@
 import { Delete, DoneAllOutlined, Edit } from "@mui/icons-material";
-import { alpha, Divider, IconButton, Paper, Typography } from "@mui/material";
+import {
+  alpha,
+  Divider,
+  IconButton,
+  Paper,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
@@ -31,6 +38,7 @@ const DONE_COLOR = "#EFF9DA";
 const IN_PROGRESS_COLOR = "#CDF5F6";
 
 export const TodoCard = (props: Props) => {
+  const theme = useTheme();
   const { handleOpenAddEditTodoModal, handleDeleteTodoCard } =
     React.useContext(TodoContext);
   return (
@@ -112,7 +120,13 @@ export const TodoCard = (props: Props) => {
                 )
               }
             >
-              <Edit />
+              <Edit
+                sx={
+                  {
+                    // color: ,
+                  }
+                }
+              />
             </IconButton>
             <IconButton
               size="small"
@@ -123,15 +137,22 @@ export const TodoCard = (props: Props) => {
                 )
               }
             >
-              <Delete />
+              <Delete
+                sx={{
+                  color: theme.palette.error.light,
+                }}
+              />
             </IconButton>
           </Box>
         ) : (
-          <DoneAllOutlined />
+          <DoneAllOutlined
+            sx={{
+              color: theme.palette.success.light,
+            }}
+          />
         )}
       </Box>
-      {/* {props.type !== TodoListType.DONE && (
-        <> */}
+
       <Divider sx={{ mb: 1, mt: 1 }} />
       <Box
         sx={{
@@ -144,8 +165,6 @@ export const TodoCard = (props: Props) => {
         </Typography>
         <Typography>{props.cardDetails.description}</Typography>
       </Box>
-      {/* </>
-      )} */}
     </Paper>
   );
 };
