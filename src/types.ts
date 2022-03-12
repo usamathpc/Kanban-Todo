@@ -4,10 +4,22 @@ export enum TodoListType {
   DONE = "DONE",
 }
 
-export interface TodoCardType {
+export interface CardType {
   id: string;
   title: string;
   description: string;
   type: TodoListType;
   createdAt: string;
+}
+
+export interface ListData {
+  title: string;
+  cards: CardType[];
+  type: TodoListType;
+}
+
+export interface ListType {
+  [TodoListType.TODO]: ListData;
+  [TodoListType.IN_PROGRESS]: ListData;
+  [TodoListType.DONE]: ListData;
 }
