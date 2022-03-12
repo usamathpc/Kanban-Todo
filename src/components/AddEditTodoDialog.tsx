@@ -1,15 +1,14 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TodoCardType, TodoListType } from "../types";
-import { v4 as uuidv4 } from "uuid";
+import TextField from "@mui/material/TextField";
 import { DateTime } from "luxon";
+import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "../TodoContext";
+import { TodoListType } from "../types";
 
 type Props = {
   isOpen: boolean;
@@ -39,50 +38,61 @@ export const AddEditTodoDialog = (props: Props) => {
   }, [props]);
 
   return (
-    <div>
-      <Dialog
-        maxWidth="sm"
-        fullWidth
-        open={props.isOpen}
-        onClose={handleCloseAddEditTodoModal}
+    <Dialog
+      maxWidth="sm"
+      fullWidth
+      open={props.isOpen}
+      onClose={handleCloseAddEditTodoModal}
+    >
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          addToDoCard(props.isAdd, props.type, {
+            id: props.isAdd ? uuidv4() : todoId,
+            title: title,
+            description: description,
+            type: type,
+            createdAt: DateTime.now().toISO(),
+          });
+          handleCloseAddEditTodoModal();
+        }}
       >
-        <DialogTitle>
+        <DialogTitle>{props.isAdd ? "Add" : "Edit"} Todo</DialogTitle>
+        <DialogContent>
           <TextField
+            sx={{
+              mt: "0.5rem",
+              mb: "1rem",
+            }}
+            placeholder="My todo.."
+            autoFocus
+            fullWidth
+            required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            label="title"
-            variant="standard"
+            label="Title"
+            variant="outlined"
           />
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <TextField
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              fullWidth
-              variant="standard"
-              label="description"
-            />
-          </DialogContentText>
+          <TextField
+            required
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            fullWidth
+            placeholder="My description.."
+            variant="outlined"
+            label="Description"
+          />
         </DialogContent>
+
         <DialogActions>
-          <Button onClick={handleCloseAddEditTodoModal}>Cancel</Button>
-          <Button
-            onClick={() => {
-              addToDoCard(props.isAdd, props.type, {
-                id: props.isAdd ? uuidv4() : todoId,
-                title: title,
-                description: description,
-                type: type,
-                createdAt: DateTime.now().toISO(),
-              });
-              handleCloseAddEditTodoModal();
-            }}
-          >
+          <Button variant="outlined" onClick={handleCloseAddEditTodoModal}>
+            Cancel
+          </Button>
+          <Button variant="contained" type="submit">
             {props.isAdd ? "Add" : "Edit"}
           </Button>
         </DialogActions>
-      </Dialog>
-    </div>
+      </form>
+    </Dialog>
   );
 };
