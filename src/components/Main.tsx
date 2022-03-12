@@ -1,22 +1,11 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import ReactCanvasConfetti from "react-canvas-confetti";
-
-import { DateTime } from "luxon";
+import { Divider, Grid, useMediaQuery, useTheme } from "@mui/material";
 import React, { useCallback, useContext, useRef } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import ReactCanvasConfetti from "react-canvas-confetti";
 import { TodoContext } from "../TodoContext";
 import { ListData, ListType, TodoListType } from "../types";
 import { AddEditTodoDialog } from "./AddEditTodoDialog";
 import { TodoList } from "./TodoList";
-import zIndex from "@mui/material/styles/zIndex";
 
 type Props = {};
 const canvasStyles: any = {
@@ -26,7 +15,6 @@ const canvasStyles: any = {
   height: "100%",
   top: 0,
   left: 0,
-  zIndex: 9999,
 };
 
 const onDragEnd = (
@@ -144,13 +132,13 @@ export const Main = (props: Props) => {
           onDragEnd(result, lists, setLists, fire)
         }
       >
-        <Grid container maxHeight={"100%"} height={"100%"} spacing={2}>
+        <Grid container spacing={1}>
           {Object.entries(lists).map((list, index) => {
             const id: TodoListType = list[0] as TodoListType;
             const listData: ListData = list[1] as ListData;
 
             return (
-              <Grid item key={id} xs={12} lg={4} style={{ paddingTop: 0 }}>
+              <Grid item key={id} xs={12} lg={4} style={{ paddingTop: 1 }}>
                 <Droppable droppableId={id} key={id}>
                   {(provided, snapshot) => (
                     <>
