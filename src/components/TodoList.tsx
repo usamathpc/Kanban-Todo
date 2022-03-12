@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Divider,
@@ -44,7 +45,6 @@ export const TodoList = (props: Props) => {
         sx={{
           bgcolor: "#FCFCFC",
           p: "5px",
-          // height: "100%",
           borderRadius: 2,
           display: "flex",
           flexDirection: "column",
@@ -64,6 +64,8 @@ export const TodoList = (props: Props) => {
           }
                         `}
           mb={1}
+          pl={2}
+          pr={2}
           height="50px"
         >
           <Typography
@@ -84,6 +86,7 @@ export const TodoList = (props: Props) => {
           {props.type === TodoListType.TODO ? (
             <Button
               size="small"
+              color="error"
               variant="outlined"
               onClick={() =>
                 handleOpenAddEditTodoModal(
@@ -102,6 +105,7 @@ export const TodoList = (props: Props) => {
             <Button
               size="small"
               variant="outlined"
+              color="success"
               onClick={handleClearDoneCards}
             >
               Clear
@@ -110,22 +114,32 @@ export const TodoList = (props: Props) => {
         </Box>
         <Scrollbars
           style={{
-            height: matches ? "400px" : "calc(100vh - 160px)",
+            height: matches ? "400px" : "calc(100vh - 181px)",
           }}
         >
           <Box pl={1} pr={1} pb={2}>
-            {props.cards?.map((card, index) => (
-              <Draggable key={card.id} draggableId={card.id} index={index}>
-                {(provided, snapshot) => (
-                  <TodoCard
-                    provided={provided}
-                    snapshot={snapshot}
-                    type={props.type}
-                    cardDetails={card}
-                  />
-                )}
-              </Draggable>
-            ))}
+            {!!props.cards?.length ? (
+              props.cards?.map((card, index) => (
+                <Draggable key={card.id} draggableId={card.id} index={index}>
+                  {(provided, snapshot) => (
+                    <TodoCard
+                      provided={provided}
+                      snapshot={snapshot}
+                      type={props.type}
+                      cardDetails={card}
+                    />
+                  )}
+                </Draggable>
+              ))
+            ) : (
+              <Typography component="em" color="textSecondary">
+                {props.type === TodoListType.TODO
+                  ? "No todo cards yet!"
+                  : props.type === TodoListType.IN_PROGRESS
+                  ? "No in progress cards yet!"
+                  : "No done cards yet!"}
+              </Typography>
+            )}
             {props.provided.placeholder}
           </Box>
         </Scrollbars>
