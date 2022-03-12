@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { TodoCardType, TodoListType } from "../types";
+import React from "react";
+import { CardType, ListType, TodoListType } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { DateTime } from "luxon";
 
 interface TodoContextType {
-  todoCards: TodoCardType[];
-  inProgressCards: TodoCardType[];
-  doneCards: TodoCardType[];
-  addToDoCard: (isAdd: boolean, type: TodoListType, card: TodoCardType) => void;
+  lists: ListType;
+  setLists: React.Dispatch<React.SetStateAction<ListType>>;
+  addToDoCard: (isAdd: boolean, type: TodoListType, card: CardType) => void;
   handleOpenAddEditTodoModal: (
     isAdd: boolean,
     todoId: string,
@@ -19,7 +18,6 @@ interface TodoContextType {
   handleCloseAddEditTodoModal: () => void;
   handleClearDoneCards: () => void;
   handleDeleteTodoCard: (todoId: string, type: TodoListType) => void;
-  setInProgressCards: (cards: TodoCardType[]) => void;
   addEditTodoModalProps: {
     isAdd: boolean;
     isOpen: boolean;
@@ -44,67 +42,76 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     createdAt: "",
   });
 
-  const [todoCards, setTodoCards] = useState<TodoCardType[]>([
-    {
-      id: uuidv4(),
-      title: "Demo Todo",
-      description: "Demo Description",
+  const [lists, setLists] = React.useState<ListType>({
+    [TodoListType.TODO]: {
+      title: "To Do",
       type: TodoListType.TODO,
-      createdAt: DateTime.now().toISO(),
+      cards: [
+        {
+          id: uuidv4(),
+          title: "NextJS/HTML/CSS",
+          description:
+            "Create website with design mockup. Move card to the Progress pane to mark it as in progress!",
+          type: TodoListType.TODO,
+          createdAt: DateTime.now().toISO(),
+        },
+      ],
     },
-  ]);
-  const [inProgressCards, setInProgressCards] = useState<TodoCardType[]>([
-    {
-      id: uuidv4(),
-      title: "Demo In Progress",
-      description: "Demo Description",
+    [TodoListType.IN_PROGRESS]: {
+      title: "In Progress",
       type: TodoListType.IN_PROGRESS,
-      createdAt: DateTime.now().toISO(),
+      cards: [
+        {
+          id: uuidv4(),
+          title: "React Native Mobile App",
+          description:
+            "Develop a RN mobile app. Drag this card to the Done pane to mark it as done! 🎉 ",
+          type: TodoListType.IN_PROGRESS,
+          createdAt: DateTime.now().toISO(),
+        },
+      ],
     },
-  ]);
-  const [doneCards, setDoneCards] = useState<TodoCardType[]>([
-    {
-      id: uuidv4(),
-      title: "Demo Done",
-      description: "Demo Description",
+    [TodoListType.DONE]: {
+      title: "Done",
       type: TodoListType.DONE,
-      createdAt: DateTime.now().toISO(),
+      cards: [
+        {
+          id: uuidv4(),
+          title: "Todo List App",
+          description: "Build a Todo List App with ReactJS",
+          type: TodoListType.DONE,
+
+          createdAt: DateTime.now().toISO(),
+        },
+      ],
     },
-  ]);
+  });
 
   const addToDoCard = (
     isAdd: boolean,
     type: TodoListType,
-    newCard: TodoCardType
+    newCard: CardType
   ) => {
     if (isAdd) {
-      setTodoCards([...todoCards, newCard]);
+      const newCards = [...lists[type].cards, newCard];
+      setLists({
+        ...lists,
+        [type]: {
+          ...lists[type],
+          cards: newCards,
+        },
+      });
     } else {
-      if (type === TodoListType.TODO) {
-        const updatedTodoCards = todoCards.map((card) => {
-          if (card.id === newCard.id) {
-            return newCard;
-          }
-          return card;
-        });
-        setTodoCards(updatedTodoCards);
-      } else if (type === TodoListType.IN_PROGRESS) {
-        const updatedInProgressCards = inProgressCards.map((card) => {
-          if (card.id === newCard.id) {
-            return newCard;
-          }
-          return card;
-        });
-        setInProgressCards(updatedInProgressCards);
-      } else if (type === TodoListType.DONE) {
-        const updatedDoneCards = doneCards.map((card) => {
-          if (card.id === newCard.id) {
-            return newCard;
-          }
-          return card;
-        });
-        setDoneCards(updatedDoneCards);
-      }
+      const newCards = lists[type].cards.map((card) =>
+        card.id === newCard.id ? newCard : card
+      );
+      setLists({
+        ...lists,
+        [type]: {
+          ...lists[type],
+          cards: newCards,
+        },
+      });
     }
   };
 
@@ -139,35 +146,35 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleClearDoneCards = () => {
-    setDoneCards([]);
+    setLists({
+      ...lists,
+      [TodoListType.DONE]: {
+        ...lists[TodoListType.DONE],
+        cards: [],
+      },
+    });
   };
 
   const handleDeleteTodoCard = (todoId: string, type: TodoListType) => {
-    if (type === TodoListType.TODO) {
-      const updatedTodoCards = todoCards.filter((card) => card.id !== todoId);
-      setTodoCards(updatedTodoCards);
-    } else if (type === TodoListType.IN_PROGRESS) {
-      const updatedInProgressCards = inProgressCards.filter(
-        (card) => card.id !== todoId
-      );
-      setInProgressCards(updatedInProgressCards);
-    } else if (type === TodoListType.DONE) {
-      const updatedDoneCards = doneCards.filter((card) => card.id !== todoId);
-      setDoneCards(updatedDoneCards);
-    }
+    const newCards = lists[type].cards.filter((card) => card.id !== todoId);
+    setLists({
+      ...lists,
+      [type]: {
+        ...lists[type],
+        cards: newCards,
+      },
+    });
   };
 
   let value = {
-    todoCards,
-    inProgressCards,
-    doneCards,
+    lists,
     addToDoCard,
     handleOpenAddEditTodoModal,
     handleCloseAddEditTodoModal,
     handleClearDoneCards,
-    setInProgressCards,
     addEditTodoModalProps,
     handleDeleteTodoCard,
+    setLists,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
