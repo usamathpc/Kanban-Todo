@@ -71,13 +71,7 @@ const onDragEnd = (
 };
 
 export const Main = (props: Props) => {
-  const {
-    lists,
-    setLists,
-    addEditTodoModalProps,
-    handleOpenAddEditTodoModal,
-    handleClearDoneCards,
-  } = useContext(TodoContext);
+  const { lists, setLists, addEditTodoModalProps } = useContext(TodoContext);
   const refAnimationInstance: any = useRef(null);
 
   const theme = useTheme();

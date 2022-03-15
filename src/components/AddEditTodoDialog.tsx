@@ -27,14 +27,12 @@ export const AddEditTodoDialog = (props: Props) => {
   const [title, setTitle] = React.useState(props.title);
   const [description, setDescription] = React.useState(props.description);
   const [type, setType] = React.useState(props.type);
-  const [createdAt, setCreatedAt] = React.useState(props.createdAt);
 
   React.useEffect(() => {
     setTodoId(props.todoId);
     setTitle(props.title);
     setDescription(props.description);
     setType(props.type);
-    setCreatedAt(props.createdAt);
   }, [props]);
 
   return (

@@ -6,8 +6,6 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { SiTodoist } from "react-icons/si";
 
-const drawerWidth = 240;
-
 type Props = {
   children?: any;
 };
