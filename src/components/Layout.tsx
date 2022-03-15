@@ -2,7 +2,6 @@ import { Avatar, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import { SiTodoist } from "react-icons/si";
@@ -34,15 +33,21 @@ export const Layout = (props: Props) => {
         }}
       >
         <Box sx={{ maxWidth: "1280px" }} display={"flex"} alignItems="center">
-          <SiTodoist fontSize={32} style={{ color: "black" }} />
-          <Typography ml={1} color="black" variant="h6" noWrap component="div">
-            MGS KANBAN TODO
+          <SiTodoist fontSize={32} style={{ color: "#64130e" }} />
+          <Typography
+            sx={{
+              color: "#64130e",
+            }}
+            ml={1}
+            color="black"
+            variant="h6"
+            noWrap
+            component="div"
+          >
+            KANBAN TODOLIST
           </Typography>
         </Box>
         <Box display="flex" alignItems={"center"}>
-          {/* <Typography mr={2} color="black">
-            Usamath PC
-          </Typography> */}
           <Avatar src="https://robohash.org/b9faeb1635b244687618d4f3acbb4803?set=set4&bgset=&size=400x400" />
         </Box>
       </AppBar>
