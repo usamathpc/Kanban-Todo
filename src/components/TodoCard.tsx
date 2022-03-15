@@ -131,10 +131,7 @@ export const TodoCard = (props: Props) => {
             <IconButton
               size="small"
               onClick={() =>
-                handleDeleteTodoCard(
-                  props.cardDetails.id,
-                  props.cardDetails.type
-                )
+                handleDeleteTodoCard(props.cardDetails.id, props?.type)
               }
             >
               <Delete

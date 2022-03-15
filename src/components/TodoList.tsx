@@ -1,8 +1,6 @@
 import {
-  Alert,
   Box,
   Button,
-  Divider,
   Typography,
   useMediaQuery,
   useTheme,
@@ -86,8 +84,7 @@ export const TodoList = (props: Props) => {
           {props.type === TodoListType.TODO ? (
             <Button
               size="small"
-              color="error"
-              variant="outlined"
+              variant="contained"
               onClick={() =>
                 handleOpenAddEditTodoModal(
                   true,
@@ -104,8 +101,8 @@ export const TodoList = (props: Props) => {
           ) : props.type === TodoListType.DONE ? (
             <Button
               size="small"
-              variant="outlined"
-              color="success"
+              color="secondary"
+              variant="contained"
               onClick={handleClearDoneCards}
             >
               Clear

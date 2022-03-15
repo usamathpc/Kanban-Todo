@@ -17,7 +17,7 @@ interface TodoContextType {
   ) => void;
   handleCloseAddEditTodoModal: () => void;
   handleClearDoneCards: () => void;
-  handleDeleteTodoCard: (todoId: string, type: TodoListType) => void;
+  handleDeleteTodoCard: (todoId: string, type?: TodoListType) => void;
   addEditTodoModalProps: {
     isAdd: boolean;
     isOpen: boolean;
@@ -155,15 +155,17 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const handleDeleteTodoCard = (todoId: string, type: TodoListType) => {
-    const newCards = lists[type].cards.filter((card) => card.id !== todoId);
-    setLists({
-      ...lists,
-      [type]: {
-        ...lists[type],
-        cards: newCards,
-      },
-    });
+  const handleDeleteTodoCard = (todoId: string, type?: TodoListType) => {
+    if (type) {
+      const newCards = lists[type].cards.filter((card) => card.id !== todoId);
+      setLists({
+        ...lists,
+        [type]: {
+          ...lists[type],
+          cards: newCards,
+        },
+      });
+    }
   };
 
   let value = {
